@@ -1,10 +1,10 @@
-var List = React.createClass({displayName: 'List',
+var TodoList = React.createClass({displayName: 'TodoList',
     getInitialState: function() {
         return {
             items: [
                 {label: 'hoge', complete: false},
                 {label: 'fuga', complete: true},
-                {label: 'bar',  complete: false},
+                {label: 'bar',  complete: false}
             ]
         };
     },
@@ -23,4 +23,4 @@ var List = React.createClass({displayName: 'List',
 });
 
 
-React.render(React.createElement(List, null), document.getElementById('workspace'));
+React.render(React.createElement(TodoList, null), document.getElementById('workspace'));
