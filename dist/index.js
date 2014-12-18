@@ -1,3 +1,9 @@
+var TodoForm = React.createClass({displayName: 'TodoForm',
+    render: function() {
+        return (React.createElement("form", null, React.createElement("input", {type: "text"})));
+    }
+});
+
 var TodoList = React.createClass({displayName: 'TodoList',
     getInitialState: function() {
         return {
@@ -22,5 +28,13 @@ var TodoList = React.createClass({displayName: 'TodoList',
     }
 });
 
+var Todo = React.createClass({displayName: 'Todo',
+    render: function() {
+        return (React.createElement("div", null, 
+            React.createElement(TodoForm, null), 
+            React.createElement(TodoList, null)
+        ));
+    }
+});
 
-React.render(React.createElement(TodoList, null), document.getElementById('workspace'));
+React.render(React.createElement(Todo, null), document.getElementById('workspace'));

@@ -1,3 +1,9 @@
+var TodoForm = React.createClass({
+    render: function() {
+        return (<form><input type="text" /></form>);
+    }
+});
+
 var TodoList = React.createClass({
     getInitialState: function() {
         return {
@@ -22,5 +28,13 @@ var TodoList = React.createClass({
     }
 });
 
+var Todo = React.createClass({
+    render: function() {
+        return (<div>
+            <TodoForm />
+            <TodoList />
+        </div>);
+    }
+});
 
-React.render(<TodoList />, document.getElementById('workspace'));
+React.render(<Todo />, document.getElementById('workspace'));
