@@ -2,9 +2,9 @@ var TodoList = React.createClass({
     getInitialState: function() {
         return {
             items: [
-                {label: 'hoge', complete: false},
-                {label: 'fuga', complete: true},
-                {label: 'bar',  complete: false}
+                {id: 1, label: 'hoge', complete: false},
+                {id: 2, label: 'fuga', complete: true},
+                {id: 3, label: 'bar',  complete: false}
             ]
         };
     },
