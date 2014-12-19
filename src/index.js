@@ -1,24 +1,24 @@
 var TodoForm = React.createClass({
+
+    onSubmit: function(e) {
+        e.preventDefault();
+
+        var label = this.refs.todo.getDOMNode().value;
+
+        this.props.addNewItem(label);
+    },
+
     render: function() {
-        return (<form><input type="text" /></form>);
+        return (<form onSubmit={this.onSubmit}><input type="text" ref="todo" /></form>);
     }
 });
 
 var TodoList = React.createClass({
-    getInitialState: function() {
-        return {
-            items: [
-                {id: 1, label: 'hoge', complete: false},
-                {id: 2, label: 'fuga', complete: true},
-                {id: 3, label: 'bar',  complete: false}
-            ]
-        };
-    },
 
     render: function() {
-        var list = this.state.items.map(function(item) {
+        var list = this.props.items.map(function(item) {
             return (
-                <li className={item.complete ? "complete" : "yet"}>
+                <li className={item.complete ? "complete" : "yet"} key={item.id}>
                   {item.label}
                 </li>
             );
@@ -29,10 +29,33 @@ var TodoList = React.createClass({
 });
 
 var Todo = React.createClass({
+    getInitialState: function() {
+        return {
+            items: [
+                {id: 1, label: 'hoge', complete: false},
+                {id: 2, label: 'fuga', complete: true},
+                {id: 3, label: 'bar',  complete: false}
+            ]
+        };
+    },
+
+    addNewItem: function(label) {
+        var items = this.state.items;
+        var item = {
+            id: items.length + 1,
+            label: label,
+            complete: false
+        };
+
+        this.setState({
+            items: items.concat([item])
+        });
+    },
+
     render: function() {
         return (<div>
-            <TodoForm />
-            <TodoList />
+            <TodoForm addNewItem={this.addNewItem} />
+            <TodoList items={this.state.items} />
         </div>);
     }
 });
