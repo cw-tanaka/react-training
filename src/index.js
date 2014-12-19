@@ -13,16 +13,38 @@ var TodoForm = React.createClass({
     }
 });
 
+var TodoItem = React.createClass({
+
+    toggle: function() {
+        this.props.toggleComplete(this.props.item.id);
+    },
+
+    onChangeCheckbox: function(e) {
+        this.toggle();
+    },
+
+    onClickLabel: function(e) {
+        this.toggle();
+    },
+
+    render: function() {
+        var item = this.props.item;
+
+        return (
+            <li className={item.complete ? "complete" : "yet"} key={item.id}>
+              <input type="checkbox" onChange={this.onChangeCheckbox} checked={item.complete} />
+              <span onClick={this.onClickLabel}>{item.label}</span>
+            </li>
+        );
+    }
+});
+
 var TodoList = React.createClass({
 
     render: function() {
         var list = this.props.items.map(function(item) {
-            return (
-                <li className={item.complete ? "complete" : "yet"} key={item.id}>
-                  {item.label}
-                </li>
-            );
-        });
+            return <TodoItem item={item} toggleComplete={this.props.toggleComplete} />;
+        }.bind(this));
 
         return (<ul>{list}</ul>);
     }
@@ -37,6 +59,21 @@ var Todo = React.createClass({
                 {id: 3, label: 'bar',  complete: false}
             ]
         };
+    },
+
+    toggleComplete: function(id) {
+        var newItems = this.state.items.map(function(item) {
+            if (id === item.id) {
+                item.complete = ! item.complete;
+                return item;
+            }
+
+            return item;
+        });
+
+        this.setState({
+            items: newItems
+        });
     },
 
     addNewItem: function(label) {
@@ -55,7 +92,7 @@ var Todo = React.createClass({
     render: function() {
         return (<div>
             <TodoForm addNewItem={this.addNewItem} />
-            <TodoList items={this.state.items} />
+            <TodoList items={this.state.items} toggleComplete={this.toggleComplete} />
         </div>);
     }
 });

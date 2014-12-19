@@ -13,16 +13,38 @@ var TodoForm = React.createClass({displayName: 'TodoForm',
     }
 });
 
+var TodoItem = React.createClass({displayName: 'TodoItem',
+
+    toggle: function() {
+        this.props.toggleComplete(this.props.item.id);
+    },
+
+    onChangeCheckbox: function(e) {
+        this.toggle();
+    },
+
+    onClickLabel: function(e) {
+        this.toggle();
+    },
+
+    render: function() {
+        var item = this.props.item;
+
+        return (
+            React.createElement("li", {className: item.complete ? "complete" : "yet", key: item.id}, 
+              React.createElement("input", {type: "checkbox", onChange: this.onChangeCheckbox, checked: item.complete}), 
+              React.createElement("span", {onClick: this.onClickLabel}, item.label)
+            )
+        );
+    }
+});
+
 var TodoList = React.createClass({displayName: 'TodoList',
 
     render: function() {
         var list = this.props.items.map(function(item) {
-            return (
-                React.createElement("li", {className: item.complete ? "complete" : "yet", key: item.id}, 
-                  item.label
-                )
-            );
-        });
+            return React.createElement(TodoItem, {item: item, toggleComplete: this.props.toggleComplete});
+        }.bind(this));
 
         return (React.createElement("ul", null, list));
     }
@@ -37,6 +59,21 @@ var Todo = React.createClass({displayName: 'Todo',
                 {id: 3, label: 'bar',  complete: false}
             ]
         };
+    },
+
+    toggleComplete: function(id) {
+        var newItems = this.state.items.map(function(item) {
+            if (id === item.id) {
+                item.complete = ! item.complete;
+                return item;
+            }
+
+            return item;
+        });
+
+        this.setState({
+            items: newItems
+        });
     },
 
     addNewItem: function(label) {
@@ -55,7 +92,7 @@ var Todo = React.createClass({displayName: 'Todo',
     render: function() {
         return (React.createElement("div", null, 
             React.createElement(TodoForm, {addNewItem: this.addNewItem}), 
-            React.createElement(TodoList, {items: this.state.items})
+            React.createElement(TodoList, {items: this.state.items, toggleComplete: this.toggleComplete})
         ));
     }
 });
